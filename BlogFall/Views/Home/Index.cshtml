@@ -3,29 +3,45 @@
     ViewBag.Title = "Anasayfa";
 }
 
-    <h3 class="pb-4 mb-4 font-italic border-bottom">
-        @ViewBag.SubTitle
-    </h3>
-    @foreach (var item in Model)
-    {
+<h3 class="pb-4 mb-4 font-italic border-bottom">
+    @ViewBag.SubTitle
+</h3>
+@foreach (var item in Model)
+{
 
-        <div class="blog-post">
-            <h2 class="blog-post-title">@item.Title</h2>
-            <p class="blog-post-meta">@item.CreationTime <a href="#">@item.Author.UserName</a></p>
+    <div class="blog-post">
+        <h2 class="blog-post-title">@item.Title</h2>
+        <p class="blog-post-meta">@item.CreationTime <a href="#">@item.Author.UserName</a></p>
 
-           
-            @Html.Raw(item.Content)
-        
-         </div><!-- /.blog-post -->
 
-    }
+        @Html.Raw(item.Content)
 
-        <nav class="blog-pagination">
+    </div><!-- /.blog-post -->
 
-            <a class="btn btn-outline-primary" href="@Url.Action("Index","Home", new { cid = ViewBag.cid, Page = ViewBag.prevPage })" tabindex="+1" aria-disabled="true"> &laquo; Önceki</a>
+}
 
-            <a class="btn btn-outline-secondary" href="@Url.Action("Index","Home", new { cid = ViewBag.cid, Page = ViewBag.nextPage })" tabindex="-1" aria-disabled="true"> Sonraki &raquo;</a>
+    <nav class="blog-pagination">
 
-            
-        </nav>
+        @if (ViewBag.page > 1)
+        {
+            <a class="btn btn-outline-primary" href="@Url.Action("Index","Home", new { cid = ViewBag.cid, page = ViewBag.prevPage })"> &laquo; Önceki</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true"> &laquo; Önceki</a>
+        }
+
+        @if (ViewBag.page < ViewBag.pageCount)
+        {
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index","Home", new { cid = ViewBag.cid, page = ViewBag.nextPage })"> Sonraki &raquo;</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true"> 
+                Sonraki &raquo;
+            </a>
+        }
+
+
+    </nav>
 
