@@ -21,12 +21,12 @@
                 <div class="col-md-9">
                     <div class="form-group">
                         @Html.TextBoxFor(x => x.Title, new { @class = "form-control", placeholder = "Başlık" })
-                        @Html.ValidationMessageFor(x => x.Title, null, new { @class ="text-danger"})
+                        @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        @Html.DropDownListFor(x => x.CategoryId,null,"Kategori Seçiniz", new { @class = "form-control" })
+                        @Html.DropDownListFor(x => x.CategoryId, null, "Kategori Seçiniz", new { @class = "form-control" })
                         @Html.ValidationMessageFor(x => x.CategoryId, null, new { @class = "text-danger" })
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 
             <div class="form-group">
                 @Html.TextAreaFor(x => x.Content, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.Content, null, new { @class = "text-danger"})
+                @Html.ValidationMessageFor(x => x.Content, null, new { @class = "text-danger" })
             </div>
             @*<div class="form-group">
                     <div class="btn btn-default btn-file">
@@ -53,7 +53,7 @@
             <a href="@Url.Action("Index","Posts")" class="btn btn-default">
                 <i class="fas fa-times"></i> İptal
             </a>
-            
+
         </div>
         <!-- /.card-footer -->
     </div>
@@ -63,8 +63,40 @@
     <script>
         $(function () {
             //Add text editor
-            $('#Content').summernote({lang: "tr-TR", height:300, placeholder:"Bir şeyler yazınız..."});
-        })
-    </script>
+            $('#Content').summernote({
+                lang: "tr-TR",
+                height: 300,
+                placeholder: "Bir şeyler yazınız..",
+                // https://stackoverflow.com/questions/21628222/summernote-image-upload
+                callbacks: {
+                    onImageUpload: function (files) {
+                        uploadFile(files[0]);
+                    }
+                }
+            });
 
+
+            function uploadFile(file) {
+                var formData = new FormData();
+                formData.append("file", file);
+
+                $.ajax({
+                    type: 'POST',
+                    url:"@Url.Action("AjaxImageUpload","Posts")",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $('#Content').summernote("insertImage", data.url);
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log("error");
+                        console.log(data);
+                    }
+                });
+            }
+        });
+    </script>
 }
