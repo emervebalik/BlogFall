@@ -1,0 +1,30 @@
+﻿@model List<ApplicationUser>
+@{
+    ViewBag.Title = "Kullanıcılar";
+    ViewBag.HeaderTitle = "Kullanıcılar";
+}
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Aktif mi?</th>                  
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                <tr>
+                    <td>@(i+1)</td>
+                    <td>@Model[i].UserName</td>
+                    <td>@Model[i].IsEnabled</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
